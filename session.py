@@ -8,7 +8,7 @@ Created on Mon Feb  8 17:44:31 2016
 
 
 from nbarrier import n_barrier
-import numpy as np
+import scipy as sc
 
 
 
@@ -37,7 +37,7 @@ Emax    =  V0 + 0.1
 #fig = plt.figure(figsize=(10, 6))
 #ax = fig.add_subplot(1,1,1)   
 plt.axis([0,Emax,-20,1])
-plt.plot(E,np.log(Trans),'b.')
+plt.plot(E,sc.log(Trans),'b.')
 
 ### major ticks every 0.2, minor ticks every 0.05                                     
 ##x_major_ticks = numpy.arange(0, Emax, 0.1)                                              
