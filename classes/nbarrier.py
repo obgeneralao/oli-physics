@@ -6,12 +6,12 @@ import math
 import scipy.constants as sc_const
 import scipy 
 import cmath
-
+from numba import jit
 
 
 class n_barrier:
     
-    def __init__(self,barrier,barrier_width,well_width,V0,npoints):
+    def __init__(self,barrier,barrier_width,well_width,V0,npoints,Emax):
         self.barrier = barrier		       	#number of potential barriers
         self.barrier_width = barrier_width		#barrier width (m), 10 Angstrom = 1e-9m = 1nm
         self.well_width    = well_width		#well width (m)
@@ -19,7 +19,7 @@ class n_barrier:
                                     	# 1 eV = 1.60217733e-19 J
         self.npoints = npoints			#number of points in energy plot
         self.N = (2*barrier)+1
-        
+        self.Emax = Emax
         
         
 #    def potential_barrier_count(self):
@@ -45,11 +45,11 @@ class n_barrier:
  #  V  = [     0    ,       V0    ,     0    ,...]           
 
                
-  
+    #@jit  
     def transmission(self):
         
-        barrier_width,well_width, V0, N, npoints =self.barrier_width,\
-                    self.well_width, self.V0, self.N, self.npoints
+        barrier_width,well_width, V0, N, npoints,Emax =self.barrier_width,\
+                    self.well_width, self.V0, self.N, self.npoints, self.Emax
                     #number of samples of potential
         indj1 = 0
         indj2 = 1
@@ -68,7 +68,7 @@ class n_barrier:
 
         Emin    = math.pi *1e-5			#add (pi*1.0e-5) to energy to avoid divide by zero
         			#maximum particle energy (eV)
-        dE      = V0/npoints		#energy increment (eV)
+        dE      = Emax/npoints		#energy increment (eV)
         eye     = 0 + 1j	#square root of -1
         #sc_const.m_e is  bare electron mass (9.109382e-31 kg)
         m    = 0.06 * sc_const.m_e  #effective electron mass / m0
